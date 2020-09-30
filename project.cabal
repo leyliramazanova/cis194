@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 59fba035f068051198aa82b5e289b86fa15e911b37bfa7d9cf2ba28f6ace8e24
+-- hash: 892338ab2473c9b2aed7ef4a05be7086df6fb2d64c1868e7be90701dc61e3db7
 
 name:           project
 version:        0.1.0.0
@@ -28,6 +28,8 @@ source-repository head
 library
   exposed-modules:
       Lib
+      Week2.Log
+      Week2.LogAnalysis
   other-modules:
       Paths_project
   hs-source-dirs:
