@@ -77,6 +77,7 @@ sumDigits ls = sum $ concatMap toDigits ls
  that indicates whether an Integer could be a valid credit card number.
  This will use all functions defined in the previous exercises.
 
+ 
  Example: validate 4012888888881881 = True
           validate 4012888888881882 = False
  -}
