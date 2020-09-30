@@ -19,8 +19,16 @@ toDigits n
     | n > 0     = toDigits (n `div` 10) ++ [n `mod` 10]
     | otherwise = []
 
+toDigits' :: Integer -> [Integer]
+toDigits' n = toDigitsAux n [] 
+    where 
+        toDigitsAux n' ls
+            | n' > 0    = toDigitsAux (n' `div` 10) $ (n' `mod` 10) : ls
+            | otherwise = ls
+
+
 toDigitsRev :: Integer -> [Integer]
-toDigitsRev n = reverse (toDigits n)
+toDigitsRev n = reverse $ toDigits n
 
 {-
  Exercise 2: Once we have the digits in the proper order, we need to
@@ -42,6 +50,14 @@ doubleEveryOther (l : l' : ls')
     | length (l : l': ls') `mod` 2 /= 0 = [l, 2*l'] ++ doubleEveryOther ls'
 
 {-
+Inspired by:
+https://stackoverflow.com/questions/19867491/double-every-other-element-of-list-from-right-in-haskell
+http://learnyouahaskell.com/starting-out
+-}
+doubleEveryOther' :: [Integer] -> [Integer]
+doubleEveryOther' ls = reverse . zipWith (*) (cycle [1,2]) . reverse $ ls
+
+{-
  Exercise 3 The output of doubleEveryOther has a mix of one-digit
  and two-digit numbers.
 
@@ -53,22 +69,18 @@ doubleEveryOther (l : l' : ls')
  -}
 
 sumDigits :: [Integer] -> Integer
-sumDigits ls = sum ls
+sumDigits ls = sum $ concatMap toDigits ls
 
 {-
  Define the function:
    validate :: Integer -> Bool
  that indicates whether an Integer could be a valid credit card number.
  This will use all functions defined in the previous exercises.
- 
+
  Example: validate 4012888888881881 = True
           validate 4012888888881882 = False
  -}
 
 validate :: Integer -> Bool
 validate n =
-    let ls = toDigitsRev n in
-    let ls_doubled = doubleEveryOther ls in
-    let ls_doubled_clean = concatMap toDigits ls in
-    let summed = sumDigits ls_doubled_clean in
-    if summed `mod` 10 == 0 then True else False
+    if (sumDigits . doubleEveryOther . toDigitsRev $ n) `mod` 10 == 0 then True else False
