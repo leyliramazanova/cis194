@@ -1,4 +1,4 @@
-module Log where
+module Week2.Log where
 
 import Control.Applicative
 
