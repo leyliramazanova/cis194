@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 59fba035f068051198aa82b5e289b86fa15e911b37bfa7d9cf2ba28f6ace8e24
+-- hash: c7e752f25218aa493d57e6de2a6acb39366cfde6c4982deb20411d43432e5c2f
 
 name:           project
 version:        0.1.0.0
@@ -28,6 +28,7 @@ source-repository head
 library
   exposed-modules:
       Lib
+      Week3.Golf
   other-modules:
       Paths_project
   hs-source-dirs:
