@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 59fba035f068051198aa82b5e289b86fa15e911b37bfa7d9cf2ba28f6ace8e24
+-- hash: 95d9706c97e84d672278071466114a370193d49a45c73cf89c89972bd5360f3a
 
 name:           project
 version:        0.1.0.0
@@ -28,6 +28,7 @@ source-repository head
 library
   exposed-modules:
       Lib
+      Week6.Fibonacci
   other-modules:
       Paths_project
   hs-source-dirs:
