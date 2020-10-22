@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 59fba035f068051198aa82b5e289b86fa15e911b37bfa7d9cf2ba28f6ace8e24
+-- hash: 3e1b2731cc85233c2647cbbfe5f5432a7d0dc7d7c635eb754a85fb4404892532
 
 name:           project
 version:        0.1.0.0
@@ -28,12 +28,19 @@ source-repository head
 library
   exposed-modules:
       Lib
+      Week7.Buffer
+      Week7.Editor
+      Week7.JoinList
+      Week7.Scrabble
+      Week7.Sized
+      Week7.StringBuffer
   other-modules:
       Paths_project
   hs-source-dirs:
       src
   build-depends:
-      base >=4.7 && <5
+      base >=4.7
+    , mtl >=2.2.2
   default-language: Haskell2010
 
 executable project-exe
