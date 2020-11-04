@@ -5,10 +5,14 @@ cabal-version: 1.12
 -- see: https://github.com/sol/hpack
 --
 <<<<<<< HEAD
+<<<<<<< HEAD
 -- hash: 34df59d78d7c19a97b9794ce9e645321b5dedcd82ae6a7a54464a8162394dfd5
 =======
 -- hash: 892338ab2473c9b2aed7ef4a05be7086df6fb2d64c1868e7be90701dc61e3db7
 >>>>>>> downloaded auxiliary files
+=======
+-- hash: 34df59d78d7c19a97b9794ce9e645321b5dedcd82ae6a7a54464a8162394dfd5
+>>>>>>> 07ee597471481d01366c315c6218258cac6ff368
 
 name:           project
 version:        0.1.0.0
@@ -32,12 +36,7 @@ source-repository head
 library
   exposed-modules:
       Lib
-      Week2.Log
-      Week2.LogAnalysis
-<<<<<<< HEAD
       Week3.Golf
-=======
->>>>>>> downloaded auxiliary files
   other-modules:
       Paths_project
   hs-source-dirs:
