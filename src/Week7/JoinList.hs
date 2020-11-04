@@ -95,39 +95,39 @@ Ensure that your function definitions use the size function from the Sized type 
 indexJ :: (Sized b, Monoid b) => Int -> JoinList b a -> Maybe a
 indexJ _ Empty  = Nothing
 indexJ 0 (Single _ a) = Just a
-indexJ i _
-   | i < 0 = Nothing
+indexJ i (Single _ _)
+   | i < 0 || i > 0 = Nothing
 indexJ i (Append _ jl1 jl2)
-   | i < jl1_size = indexJ i jl1
-   | i > jl1_size + jl2_size = Nothing
-   | otherwise    = indexJ (i - jl1_size) jl2
+   | i < jl1Size           = indexJ i jl1
+   | i > jl1Size + jl2Size = Nothing
+   | otherwise             = indexJ (i - jl1Size) jl2
    where
-      jl1_size = getSize . size . tag $ jl1
-      jl2_size = getSize . size . tag $ jl2
+      jl1Size = getSize . size . tag $ jl1
+      jl2Size = getSize . size . tag $ jl2
 
 dropJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
 dropJ _ Empty = Empty
 dropJ 0 jl = jl
 dropJ n (Append _ jl1 jl2)
-   | n < jl1_size  = (dropJ n jl1) +++ jl2
-   | n > jl1_size + jl2_size = Empty
-   | n == jl1_size = jl2
-   | otherwise     = dropJ (n - jl1_size) $ jl2
+   | n < jl1Size                = (dropJ n jl1) +++ jl2
+   | n == jl1Size               = jl2
+   | jl1Size < n && n < jl2Size = dropJ (n - jl1Size) $ jl2
+   | otherwise                  = Empty
    where
-      jl1_size = getSize . size . tag $ jl1
-      jl2_size = getSize . size . tag $ jl2
+      jl1Size = getSize . size . tag $ jl1
+      jl2Size = getSize . size . tag $ jl2
 
 takeJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
 takeJ _ Empty = Empty
 takeJ 0 _ = Empty
 takeJ n (Append _ jl1 jl2)
-   | n < jl1_size = takeJ n jl1
-   | n > jl1_size + jl2_size = Empty
-   | n == jl1_size = jl1
-   | otherwise = jl1 +++ (takeJ (n - jl1_size) $ jl2)
+   | n < jl1Size               = takeJ n jl1
+   | n == jl1Size              = jl1
+   | jl1Size < n && n < jl2Size = jl1 +++ (takeJ (n - jl1Size) $ jl2)
+   | otherwise                  = Empty
    where
-      jl1_size = getSize . size . tag $ jl1
-      jl2_size = getSize . size . tag $ jl2
+      jl1Size = getSize . size . tag $ jl1
+      jl2Size = getSize . size . tag $ jl2
 
 {-
 Exercise 3:
