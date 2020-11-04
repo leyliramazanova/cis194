@@ -21,19 +21,19 @@ which takes two GuestLists and returns whichever one of them is more fun, i.e. h
 -}
 
 glCons :: Employee -> GuestList -> GuestList
-glCons emp (GL e_ls f) = GL (e_ls ++ [emp]) (f + empFun emp)
+glCons emp (GL emp_ls f) = GL (emp_ls ++ [emp]) (f + empFun emp)
 
 instance Semigroup GuestList where
-    (<>) (GL e_ls1 f1) (GL e_ls2 f2)= GL (e_ls1 ++ e_ls2) (f1 + f2)
+    (<>) (GL emp_ls1 fun1) (GL emp_ls2 fun2)= GL (emp_ls1 ++ emp_ls2) (fun1 + fun2)
 
 instance Monoid GuestList where
     mempty = GL [] 0
-    GL e_ls1 f1 `mappend` GL e_ls2 f2 = GL (e_ls1 ++ e_ls2) (f1 + f2)
+    GL emp_ls1 fun1 `mappend` GL emp_ls2 fun2 = GL (emp_ls1 ++ emp_ls2) (fun1 + fun2)
 
 moreFun :: GuestList -> GuestList -> GuestList
-moreFun (GL e_ls1 f1) (GL e_ls2 f2) 
-    | f1 >= f2 = GL e_ls1 f1
-    | otherwise = GL e_ls2 f2
+moreFun (GL emp_ls1 fun1) (GL emp_ls2 fun2) 
+    | fun1 >= fun2 = GL emp_ls1 fun1
+    | otherwise = GL emp_ls2 fun2
 
 {-
 Exercise 2
@@ -70,7 +70,7 @@ treeFold f (Node r ls) = f r $ (treeFold f <$> ls)
 
 
 combineGLs :: Employee -> [GuestList] -> GuestList
-combineGLs emp gls = foldr moreFun (GL [emp] $ empFun emp) gls
+combineGLs emp guestList = foldr moreFun (GL [emp] $ empFun emp) guestList
 
 {-
 Exercise 3
