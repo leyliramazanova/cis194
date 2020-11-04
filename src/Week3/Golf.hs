@@ -17,6 +17,13 @@ skips []           == []
 
 Note that the output should be the same length as the input.
 
+{-
+This function takes an index and a list as its input.
+Given an index x, we get the elements at that index - 1 and every xth element from the list.
+Start with x-1 because when starting at 1, we want to make sure we get the 0th element on the first iteration.
+Subsequently, on whatever index we started (x-1), we add x to it to extract the next element of the current sub-list.
+-}
+
 -}
 
 {-
@@ -24,15 +31,18 @@ Note that the output should be the same length as the input.
 -}
 skips :: [a] -> [[a]]
 skips xs = [indexList x xs | x <- [1..length xs]]
+  where
+    indexList :: Int -> [a] -> [a]
+    indexList x xs = [xs !! i | i <- [x - 1, x - 1 + x .. length xs - 1]]
 
-{-
-This function takes an index and a list as its input.
-Given an index x, we get the elements at that index - 1 and every xth element from the list.
-Start with x-1 because when starting at 1, we want to make sure we get the 0th element on the first iteration.
-Subsequently, on whatever index we started (x-1), we add x to it to extract the next element of the current sub-list.
--}
-indexList :: Int -> [a] -> [a]
-indexList x xs = [xs !! i | i <- [x-1, x-1+x..length xs - 1]]
+
+skips' :: [a] -> [[a]]
+skips' [] = []
+skips' xs = map (\i -> indexList' i xs) [1..length xs]
+  where
+    indexList' :: Int -> [a] -> [a]
+    indexList' x xs = map (\i -> xs !! i) [x - 1, x - 1 + x .. length xs - 1]
+
 
 exercise1 = do
   print $ skips "ABCD"       == ["ABCD", "BD", "C", "D"]
@@ -61,12 +71,19 @@ Applying checkAtIndex only between index 1 and length-2 because the first and la
 localMaxima :: [Integer] -> [Integer]
 localMaxima xs = filter (/= 0) [checkAtIndex i xs | i <- [1..length xs -2]]
 
+localMaxima' :: [Integer] -> [Integer]
+localMaxima' [] = []
+localMaxima' xs =  filter (/= 0) $ map (\i -> checkAtIndex i xs) [0..length xs - 1]
+
 {-
 Given an index and a list, this function will check if the element at the index is bigger than the neighbor elements on both sides.
 -}
 
 checkAtIndex :: Int -> [Integer] -> Integer
-checkAtIndex i xs = if xs !! i  > xs !! (i-1) && xs !! i > xs !! (i+1) then xs !! i else 0
+checkAtIndex i xs = 
+  if i > 0 && i < (length xs - 1) && xs !! i  > xs !! (i-1) && xs !! i > xs !! (i+1) 
+    then xs !! i 
+    else 0
 
 exercise2 = do
   print $ localMaxima [2,9,5,6,1] == [9,6]
@@ -106,17 +123,22 @@ histogram :: [Integer] -> String
 histogram xs =   
     unlines (map (starLine num) [max, max-1..1]) ++ "==========\n0123456789\n"
     where 
+        count :: [Integer] -> [Int]
+        count xs = map (\x -> length $ filter (== x) $ xs) [0..9] 
+
+        num :: [Int] 
         num = count xs
+
+        max :: Int
         max = maximum num
 
+        starLine :: [Int] -> Int -> String
+        starLine xs x = [if i >= x then '*' else ' ' | i <- xs]
 
 
-starLine :: [Int] -> Int -> String
-starLine xs x = [if i >= x then '*' else ' ' | i <- xs]
 
 {-inspired by https://codereview.stackexchange.com/questions/139587/count-occurrences-of-an-element-in-a-list-}
-count :: [Integer] -> [Int]
-count xs = map (\x -> length . filter (== x) $ xs) [0..9]
+
 
 exercise3 = do
   print $ histogram [3,5] == "   * *    \n==========\n0123456789\n"
