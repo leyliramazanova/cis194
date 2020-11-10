@@ -88,12 +88,14 @@ Of course, this assumes that the name and phone number are right next to each ot
 We’ll see later how to make parsers that can throw away extra stuff that doesn’t directly correspond to information you want to parse.
 -}
 
+
 instance Applicative Parser where
-    pure a = Parser $ (\s -> Just (a, s))
+    pure a = Parser $ (\s -> pure (a, s)) --can use Just (a, s)
     p1 <*> p2 = Parser p
         where 
             p s = runParser p1 s >>= g
             g (f, res_str) = runParser (f <$> p2) res_str
+
 
 {-
 Exercise 3
@@ -125,6 +127,10 @@ abParser = (,) <$> char 'a' <*> char 'b'
 
 abParser_ :: Parser ()
 abParser_ =  const () <$> abParser
+
+-- <$ = fmap . const
+abParser' :: Parser ()
+abParser' = () <$ abParser
 
 intPair :: Parser [Integer]
 intPair = (\i1 i2 -> [i1, i2]) <$> posInt <*> posInt
@@ -168,5 +174,8 @@ Next week, we will use your parsing framework to build a more sophisticated pars
 
 intOrUppercase :: Parser ()
 intOrUppercase = const() <$> satisfy isUpper <|> const () <$> posInt
+
+intOrUppercase' :: Parser ()
+intOrUppercase' = () <$ posInt <|> () <$ satisfy isUpper
 
 
